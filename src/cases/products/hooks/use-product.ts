@@ -3,10 +3,10 @@ import type { ProductDTO } from "../dtos/product.dto";
 import { ProductService } from "../services/product.service";
 
 
-export function useProducts() {
+export function useProducts(categoryId: string | undefined) {
     return useQuery<ProductDTO[]>({
-        queryKey: ['products'],
-        queryFn: ProductService.list
+        queryKey: ['products', categoryId ?? 'all'],
+        queryFn: () => ProductService.list(categoryId)
     });
 }
 

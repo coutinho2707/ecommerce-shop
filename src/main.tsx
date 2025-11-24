@@ -10,7 +10,7 @@ const queryClient = new QueryClient()
 createRoot(document.getElementById('root')!).render(
   <BrowserRouter>
     <QueryClientProvider client={queryClient}>
-      <IntlProvider locale="pt-BR">
+      <IntlProvider locale="pt-BR" messages={{}}>
         <App />
       </IntlProvider>
     </QueryClientProvider>

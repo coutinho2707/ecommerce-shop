@@ -3,7 +3,6 @@ import { CategoryService } from "../services/category.service";
 import type { CategoryDTO } from "../dtos/category.dto";
     
 
-
 export function useCategories() {
     return useQuery<CategoryDTO[]>({
         queryKey: ['categories'],

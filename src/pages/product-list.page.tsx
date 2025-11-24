@@ -1,10 +1,13 @@
 import { CategoryMenu } from "@/cases/categories/components/category-menu";
 import { ProductCard } from "@/cases/products/components/product-card";
 import { useProducts } from "@/cases/products/hooks/use-product";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 
 export function ProdutcListPage() {
-    const { data: products } = useProducts();
+    const [searchParams] = useSearchParams();
+    const categoryId = searchParams.get('categoryId') || undefined;
+
+    const { data: products } = useProducts(categoryId);
 
     return (
         <>
