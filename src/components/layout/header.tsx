@@ -1,5 +1,6 @@
 import { useCart } from "@/cases/cart/hooks/use-cart";
 import { useCategories, useCategory } from "@/cases/categories/hooks/use-category";
+import { useAuth } from "@/cases/auth/hooks/use-auth";
 import { Button } from "@/components/ui/button";
 import {
     DropdownMenu,
@@ -8,12 +9,14 @@ import {
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { cn } from "@/lib/utils";
-import { ChevronDown, Home, ShoppingCart, Store } from "lucide-react";
-import { Link, useSearchParams } from "react-router-dom";
+import { ChevronDown, Home, ShoppingCart, Store, LogOut, User } from "lucide-react";
+import { Link, useSearchParams, useNavigate } from "react-router-dom";
 
 export function Header() {
     const { totalItems } = useCart();
     const { data: categories } = useCategories();
+    const { user, isAuthenticated, signOut } = useAuth();
+    const navigate = useNavigate();
 
     const visibleItems = categories?.slice(0, 5) || [];
     const hiddenItems = categories?.slice(5) || [];
@@ -21,6 +24,15 @@ export function Header() {
     const [searchParams, setSearchParams] = useSearchParams();
     const categoryId = searchParams.get('categoryId') ?? undefined;
     const { data: activeCategory } = useCategory(categoryId!);
+
+    const handleSignOut = async () => {
+        try {
+            await signOut();
+            navigate('/');
+        } catch (error) {
+            console.error('Error signing out:', error);
+        }
+    };
 
     function handleSelect(catId?: string) {
         const newParams = new URLSearchParams(searchParams);
@@ -109,6 +121,38 @@ export function Header() {
                                 )}
                             </Button>
                         </Link>
+
+                        {isAuthenticated && user ? (
+                            <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                    <Button variant="outline" size="icon" className="rounded-full">
+                                        <User className="size-5" />
+                                    </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="end">
+                                    <DropdownMenuItem disabled className="text-xs">
+                                        {user.email}
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem onClick={handleSignOut} className="cursor-pointer gap-2">
+                                        <LogOut className="size-4" />
+                                        Sign Out
+                                    </DropdownMenuItem>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
+                        ) : (
+                            <>
+                                <Link to="/signin">
+                                    <Button variant="outline" size="sm">
+                                        Sign In
+                                    </Button>
+                                </Link>
+                                <Link to="/signup">
+                                    <Button size="sm">
+                                        Sign Up
+                                    </Button>
+                                </Link>
+                            </>
+                        )}
                     </div>
                 </div>
             </div>

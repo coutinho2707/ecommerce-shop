@@ -2,21 +2,28 @@ import { Routes, Route } from 'react-router-dom';
 import { ProdutcListPage } from './pages/product-list.page';
 import { ProductDetailPage } from './pages/product-detail.page';
 import { CartPage } from './pages/cart-page';
+import { SignInPage } from './pages/singin-pages';
+import { SignUpPage } from './pages/singup-form';
 import { Header } from './components/layout/header';
+import { AuthProvider } from './cases/auth/contexts/auth.context';
 
 function App() {
   return (
-    <div className="bg-zinc-50 min-h-screen">
-      <Header />
+    <AuthProvider>
+      <div className="bg-zinc-50 min-h-screen">
+        <Header />
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <Routes>
-          <Route path="/" element={<ProdutcListPage />} />
-          <Route path="/products/:id" element={<ProductDetailPage />} />
-          <Route path="/cart" element={<CartPage />} />
-        </Routes>
-      </main>
-    </div>
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <Routes>
+            <Route path="/" element={<ProdutcListPage />} />
+            <Route path="/products/:id" element={<ProductDetailPage />} />
+            <Route path="/cart" element={<CartPage />} />
+            <Route path="/signin" element={<SignInPage />} />
+            <Route path="/signup" element={<SignUpPage />} />
+          </Routes>
+        </main>
+      </div>
+    </AuthProvider>
   );
 }
 
