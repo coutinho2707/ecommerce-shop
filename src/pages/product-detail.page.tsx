@@ -5,7 +5,16 @@ import { useParams } from "react-router-dom";
 
 export function ProductDetailPage() {
     const {id} = useParams<{id: string}>();
-    const {data: product} = useProduct(id!) 
+    const {data: product, isLoading, isError} = useProduct(id!) 
+
+    if (isLoading) {
+        return <div className="p-4">Carregando...</div>;
+    }
+
+    if (isError || !product) {
+        return <div className="p-4">Produto não encontrado.</div>;
+    }
+
     return (
         <div className="p-4">
             <Breadcrumb>
@@ -15,15 +24,15 @@ export function ProductDetailPage() {
                     </BreadcrumbItem>
                     <BreadcrumbSeparator />
                     <BreadcrumbItem>
-                        <BreadcrumbLink href= {`/?categoryId/${product?.category.id}`} >
-                            {product?.category.name}
+                        <BreadcrumbLink href= {`/?categoryId/${product.category.id}`} >
+                            {product.category.name}
                         
                         </BreadcrumbLink>
                     </BreadcrumbItem>
                     <BreadcrumbSeparator />
                     <BreadcrumbItem>
                         <BreadcrumbPage>
-                            {product?.name}
+                            {product.name}
                         
                         </BreadcrumbPage>
                     </BreadcrumbItem>
@@ -31,7 +40,7 @@ export function ProductDetailPage() {
             </Breadcrumb>
 
             <div className="py-8">
-                <ProductDetail product={product!} />
+                <ProductDetail product={product} />
             </div>
         </div>
     )
