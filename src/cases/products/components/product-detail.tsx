@@ -13,28 +13,14 @@ export function ProductDetail({
     product
 }: ProductDetailProps) {
 
-    const bucketUrl = import.meta.env.VITE_BUCKET_URL;
-    const [selectedPhoto] = useState<number>(0);
+    const [selectedPhoto, setSelectedPhoto] = useState<number>(0);
     const { addToCart } = useCart();
     
     const photos = product.photos || [];
     const mainPhoto = photos[selectedPhoto];
     
-    let mainImagePhoto = `https://placehold.co/500x500?text=Sem+Imagem&font=roboto`;
-    
-    if (mainPhoto) {
-      if (mainPhoto.url && typeof mainPhoto.url === 'string') {
-        // Se for uma URL completa (começa com http), use direto
-        if (mainPhoto.url.startsWith('http')) {
-          mainImagePhoto = mainPhoto.url;
-        } else {
-          // Se for um caminho relativo, pode vir do Supabase ou ser um path local
-          mainImagePhoto = mainPhoto.url;
-        }
-      } else if (mainPhoto.path) {
-        mainImagePhoto = `${bucketUrl}${mainPhoto.path}`;
-      }
-    }
+    // A URL já vem construída do backend
+    const mainImagePhoto = mainPhoto?.url || `https://placehold.co/500x500?text=Sem+Imagem&font=roboto`;
 
     const handleAddToCart = () => {
         addToCart(product);
@@ -53,14 +39,37 @@ export function ProductDetail({
         <div className="flex flex-col gap-4">
 
             <div className="flex mt-8 gap-16 flex-col md:flex-row">
-                <div className="min-w-md">
-                    <div className="w-full">
+                <div className="min-w-md flex flex-col gap-4">
+                    {/* Imagem Principal */}
+                    <div className="w-full bg-gray-100 rounded-lg overflow-hidden">
                         <img 
-                        src ={mainImagePhoto} 
+                        src={mainImagePhoto} 
                         alt={product.name} 
-                        className="max-h-full max-w-full object-contain" />
+                        className="w-full h-96 object-contain" />
                     </div>
                     
+                    {/* Galeria de Thumbnails */}
+                    {photos.length > 1 && (
+                        <div className="flex gap-2 overflow-x-auto">
+                            {photos.map((photo, index) => (
+                                <button
+                                    key={photo.id}
+                                    onClick={() => setSelectedPhoto(index)}
+                                    className={`flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 transition-all ${
+                                        selectedPhoto === index 
+                                            ? 'border-blue-500' 
+                                            : 'border-gray-300 hover:border-gray-400'
+                                    }`}
+                                >
+                                    <img 
+                                        src={photo.url} 
+                                        alt={`${product.name} ${index + 1}`}
+                                        className="w-full h-full object-cover"
+                                    />
+                                </button>
+                            ))}
+                        </div>
+                    )}
                 </div>
 
                 <div className="w-full flex flex-col gap-6">

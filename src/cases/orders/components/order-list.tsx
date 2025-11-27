@@ -27,7 +27,7 @@ const formatPrice = (price: number | undefined): string => {
 };
 
 export function OrderList() {
-  const { orders, isLoading, error, fetchOrders, cancelOrder, deliverOrder } = useOrders();
+  const { orders, isLoading, error, fetchOrders } = useOrders();
   const [expandedReviewItemId, setExpandedReviewItemId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -114,24 +114,6 @@ export function OrderList() {
               Total: {formatPrice(order.totalPrice)}
             </div>
             <div className="flex gap-2">
-              {order.status === 'pending' && (
-                <>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => deliverOrder(order.id)}
-                  >
-                    Marcar como Entregue
-                  </Button>
-                  <Button
-                    variant="destructive"
-                    size="sm"
-                    onClick={() => cancelOrder(order.id)}
-                  >
-                    Cancelar
-                  </Button>
-                </>
-              )}
             </div>
           </div>
         </div>
