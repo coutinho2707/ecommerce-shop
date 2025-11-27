@@ -12,7 +12,13 @@ export const ProductService = {
         return result.data;
     },
 
- 
+    async search(query: string): Promise<ProductDTO[]> {
+        const result = await api.get(`${_ENDPOINT}/search`, {
+            headers: { search: query }
+        });
+        return result.data;
+    },
+  
     async getById(id: string): Promise<ProductDTO> {
         const result = await api.get(`${_ENDPOINT}/${id}`);
         return result.data;

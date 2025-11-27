@@ -55,13 +55,14 @@ export function useInteractions() {
       const token = getToken();
       try {
         const res = await service.addFavorite(productId, token);
-        setFavorites((prev) => [...prev, res.data || res]);
+        const favoriteData = res.data || res;
+        setFavorites((prev) => [...prev, favoriteData]);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Erro');
         throw err;
       }
     },
-    []
+    [user]
   );
 
   const removeFavorite = useCallback(
@@ -74,7 +75,7 @@ export function useInteractions() {
         setError(err instanceof Error ? err.message : 'Erro');
       }
     },
-    []
+    [user]
   );
 
   const isFavorite = (productId: string) => 
@@ -118,7 +119,7 @@ export function useInteractions() {
         throw err;
       }
     },
-    []
+    [user]
   );
 
   const deleteReview = useCallback(
@@ -131,7 +132,7 @@ export function useInteractions() {
         setError(err instanceof Error ? err.message : 'Erro');
       }
     },
-    []
+    [user]
   );
 
   return {

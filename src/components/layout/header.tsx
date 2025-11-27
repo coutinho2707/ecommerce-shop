@@ -2,6 +2,7 @@ import { useCart } from "@/cases/cart/hooks/use-cart";
 import { useCategories, useCategory } from "@/cases/categories/hooks/use-category";
 import { useAuth } from "@/cases/auth/hooks/use-auth";
 import { Button } from "@/components/ui/button";
+import { SearchBar } from "@/components/search-bar";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -59,6 +60,11 @@ export function Header() {
                             <span className="text-[10px] text-muted-foreground font-medium uppercase tracking-wider">DESDE 2004 COM OS MELHORES PRODUTOS E PREÇOS</span>
                         </div>
                     </Link>
+
+                    {/* Search Bar */}
+                    <div className="hidden md:flex w-full max-w-sm">
+                        <SearchBar />
+                    </div>
 
                     {/* Navigation / Categories */}
                     <nav className="flex items-center gap-1 overflow-x-auto max-w-full pb-2 md:pb-0 no-scrollbar">

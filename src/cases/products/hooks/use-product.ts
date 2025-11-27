@@ -10,6 +10,14 @@ export function useProducts(categoryId: string | undefined) {
     });
 }
 
+export function useProductSearch(query: string) {
+    return useQuery<ProductDTO[]>({
+        queryKey: ['products', 'search', query],
+        queryFn: () => ProductService.search(query),
+        enabled: query.length >= 2
+    });
+}
+
 export function useProduct(id: string) {
     return useQuery<ProductDTO>({
         queryKey: ['product', id],

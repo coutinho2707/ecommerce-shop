@@ -32,7 +32,7 @@ export function ProductCard({ product }: ProductCardProps) {
   return (
     <Card className="w-full h-full hover:shadow-lg transition-all duration-300 overflow-hidden group">
       <CardHeader className="p-0 relative overflow-hidden bg-gray-100">
-        <div className="relative w-full h-48 flex items-center justify-center">
+        <div className="relative w-full h-96 flex items-center justify-center">
           {imagePath ? (
             <img
               src={imagePath}
@@ -58,7 +58,7 @@ export function ProductCard({ product }: ProductCardProps) {
         <div className="space-y-2 border-t pt-3">
           <p className="text-xs text-gray-400 line-through">
             <FormattedNumber
-              value={product.price * 1.15}
+              value={product.price}
               style="currency"
               currency="BRL"
             />
