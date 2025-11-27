@@ -66,4 +66,20 @@ export class OrderService {
       throw new Error('Failed to cancel order');
     }
   }
+
+  async deliverOrder(id: string, token: string): Promise<Order> {
+    const response = await fetch(`${API_URL}/orders/${id}/deliver`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to deliver order');
+    }
+
+    return response.json();
+  }
 }

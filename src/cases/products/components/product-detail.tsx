@@ -2,6 +2,8 @@ import { useState } from "react";
 import type { ProductDTO } from "../dtos/product.dto";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/cases/cart/hooks/use-cart";
+import { FavoriteButton } from "@/cases/interactions/components/favorite-button";
+import { ProductReviews } from "@/cases/interactions/components/product-reviews";
 
 type ProductDetailProps = {
     product: ProductDTO;
@@ -50,12 +52,17 @@ export function ProductDetail({
 
                 <div className="w-full flex flex-col gap-6">
                     <div>
-                        <h1 className="text-3xl font-bold mb-2">{product.name}</h1>
-                        <div className="text-sm text-muted-foreground mb-4">
-                            {product.category.name} {product.brand ? `• ${product.brand.name}` : ''}
-                        </div>
-                        <div className="text-2xl font-bold text-primary">
-                            {formatPrice(product.price)}
+                        <div className="flex items-start justify-between gap-4">
+                            <div className="flex-1">
+                                <h1 className="text-3xl font-bold mb-2">{product.name}</h1>
+                                <div className="text-sm text-muted-foreground mb-4">
+                                    {product.category.name} {product.brand ? `• ${product.brand.name}` : ''}
+                                </div>
+                                <div className="text-2xl font-bold text-primary">
+                                    {formatPrice(product.price)}
+                                </div>
+                            </div>
+                            <FavoriteButton productId={product.id} />
                         </div>
                     </div>
 
@@ -75,6 +82,10 @@ export function ProductDetail({
 
             </div>
 
+            <div className="mt-12">
+                <h2 className="text-2xl font-bold mb-6">Avaliações</h2>
+                <ProductReviews productId={product.id} />
+            </div>
 
         </div>
     )

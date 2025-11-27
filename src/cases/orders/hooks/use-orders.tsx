@@ -73,6 +73,29 @@ export function useOrders() {
     [token]
   );
 
+  const deliverOrder = useCallback(
+    async (orderId: string) => {
+      setIsLoading(true);
+      setError(null);
+
+      try {
+        const updatedOrder = await orderService.deliverOrder(orderId, token);
+        setOrders((prev) =>
+          prev.map((order) =>
+            order.id === orderId ? updatedOrder : order
+          )
+        );
+      } catch (err) {
+        const message = err instanceof Error ? err.message : 'Falha ao marcar como entregue';
+        setError(message);
+        throw err;
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [token]
+  );
+
   return {
     orders,
     isLoading,
@@ -80,5 +103,6 @@ export function useOrders() {
     fetchOrders,
     createOrder,
     cancelOrder,
+    deliverOrder,
   };
 }

@@ -37,7 +37,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       const response = await authService.signIn(data);
       authService.saveUser(response.customer);
-      const accessToken = response.session?.access_token || response.user.id;
+      const accessToken = response.session?.access_token;
+      if (!accessToken) {
+        throw new Error('No access token received from server');
+      }
       authService.saveToken(accessToken);
       console.log('signIn - Token saved:', accessToken ? 'success' : 'failed');
       setUser(response.customer);
@@ -56,7 +59,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       const response = await authService.signUp(data);
       authService.saveUser(response.customer);
-      const accessToken = response.session?.access_token || response.user.id;
+      const accessToken = response.session?.access_token;
+      if (!accessToken) {
+        throw new Error('No access token received from server');
+      }
       authService.saveToken(accessToken);
       console.log('signUp - Token saved:', accessToken ? 'success' : 'failed');
       setUser(response.customer);

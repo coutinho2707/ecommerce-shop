@@ -5,6 +5,7 @@ import { CartPage } from './pages/cart-page';
 import { SignInPage } from './pages/singin-pages';
 import { SignUpPage } from './pages/singup-form';
 import { OrdersPage } from './pages/orders-page';
+import { FavoritesPage } from './pages/favorites-page';
 import { CheckoutPage } from './pages/checkout-page';
 import { Header } from './components/layout/header';
 import { AuthProvider } from './cases/auth/contexts/auth.context';
@@ -39,7 +40,15 @@ function App() {
                 </ProtectedRoute>
               } 
             />
-          </Routes>
+            <Route 
+              path="/favorites" 
+              element={
+                <ProtectedRoute>
+                  <FavoritesPage />
+                </ProtectedRoute>
+              } 
+            />
+            </Routes>
         </main>
       </div>
     </AuthProvider>

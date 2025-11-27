@@ -9,7 +9,7 @@ import {
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { cn } from "@/lib/utils";
-import { ChevronDown, Home, ShoppingCart, Store, LogOut, User, Package } from "lucide-react";
+import { ChevronDown, Home, ShoppingCart, Store, LogOut, User, Package, Heart } from "lucide-react";
 import { Link, useSearchParams, useNavigate } from "react-router-dom";
 
 export function Header() {
@@ -124,6 +124,11 @@ export function Header() {
 
                         {isAuthenticated && user ? (
                             <>
+                                <Link to="/favorites">
+                                    <Button variant="outline" size="icon" className="rounded-full">
+                                        <Heart className="size-5" />
+                                    </Button>
+                                </Link>
                                 <Link to="/orders">
                                     <Button variant="outline" size="icon" className="rounded-full">
                                         <Package className="size-5" />

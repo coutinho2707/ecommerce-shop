@@ -1,6 +1,7 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useOrders } from '../hooks/use-orders';
 import { Button } from '@/components/ui/button';
+import { ReviewForm } from '@/cases/interactions/components/review-form';
 
 const statusLabels: Record<string, string> = {
   pending: 'Pendente',
@@ -26,7 +27,8 @@ const formatPrice = (price: number | undefined): string => {
 };
 
 export function OrderList() {
-  const { orders, isLoading, error, fetchOrders, cancelOrder } = useOrders();
+  const { orders, isLoading, error, fetchOrders, cancelOrder, deliverOrder } = useOrders();
+  const [expandedReviewItemId, setExpandedReviewItemId] = useState<string | null>(null);
 
   useEffect(() => {
     fetchOrders();
@@ -72,11 +74,37 @@ export function OrderList() {
             </span>
           </div>
 
-          <div className="space-y-2 mb-4">
+          <div className="space-y-4 mb-4">
             {order.items.map((item) => (
-              <div key={item.id} className="flex justify-between text-sm">
-                <span>{item.productName} x{item.quantity}</span>
-                <span>{formatPrice(item.total)}</span>
+              <div key={item.id} className="border-b pb-4 last:border-b-0">
+                <div className="flex justify-between text-sm mb-2">
+                  <span>{item.productName} x{item.quantity}</span>
+                  <span>{formatPrice(item.total)}</span>
+                </div>
+
+                {order.status === 'delivered' && (
+                  <div className="mt-2">
+                    {expandedReviewItemId === item.id ? (
+                      <ReviewForm
+                        orderItemId={item.id}
+                        productName={item.productName}
+                        onSuccess={() => {
+                          setExpandedReviewItemId(null);
+                          fetchOrders();
+                        }}
+                      />
+                    ) : (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setExpandedReviewItemId(item.id)}
+                        className="w-full"
+                      >
+                        Avaliar Produto
+                      </Button>
+                    )}
+                  </div>
+                )}
               </div>
             ))}
           </div>
@@ -85,15 +113,26 @@ export function OrderList() {
             <div className="font-semibold">
               Total: {formatPrice(order.totalPrice)}
             </div>
-            {order.status === 'pending' && (
-              <Button
-                variant="destructive"
-                size="sm"
-                onClick={() => cancelOrder(order.id)}
-              >
-                Cancelar Pedido
-              </Button>
-            )}
+            <div className="flex gap-2">
+              {order.status === 'pending' && (
+                <>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => deliverOrder(order.id)}
+                  >
+                    Marcar como Entregue
+                  </Button>
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    onClick={() => cancelOrder(order.id)}
+                  >
+                    Cancelar
+                  </Button>
+                </>
+              )}
+            </div>
           </div>
         </div>
       ))}

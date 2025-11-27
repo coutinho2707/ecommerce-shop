@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import type { ProductDTO } from '../dtos/product.dto';
 import { FormattedNumber } from 'react-intl';
 import { ShoppingCart } from 'lucide-react';
+import { FavoriteButton } from '@/cases/interactions/components/favorite-button';
 
 type ProductCardProps = {
   product: ProductDTO;
@@ -40,6 +41,9 @@ export function ProductCard({ product }: ProductCardProps) {
             />) : null}
           <div className="absolute top-2 left-2 bg-red-500 text-white px-2 py-1 rounded-md text-xs font-bold">
             -10%
+          </div>
+          <div className="absolute top-2 right-2">
+            <FavoriteButton productId={product.id} />
           </div>
         </div>
 
