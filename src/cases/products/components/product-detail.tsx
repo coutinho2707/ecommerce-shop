@@ -13,15 +13,28 @@ export function ProductDetail({
     product
 }: ProductDetailProps) {
 
-    const bucketsUrl = import.meta.env.VITE_BUCKETS_URL;
+    const bucketUrl = import.meta.env.VITE_BUCKET_URL;
     const [selectedPhoto] = useState<number>(0);
     const { addToCart } = useCart();
     
     const photos = product.photos || [];
     const mainPhoto = photos[selectedPhoto];
-    const mainImagePhoto= mainPhoto 
-        ? `${bucketsUrl}${mainPhoto.path}` 
-        : `https://placehold.co/300x300?text=Sem+Imagem&font-roboto`;
+    
+    let mainImagePhoto = `https://placehold.co/500x500?text=Sem+Imagem&font=roboto`;
+    
+    if (mainPhoto) {
+      if (mainPhoto.url && typeof mainPhoto.url === 'string') {
+        // Se for uma URL completa (começa com http), use direto
+        if (mainPhoto.url.startsWith('http')) {
+          mainImagePhoto = mainPhoto.url;
+        } else {
+          // Se for um caminho relativo, pode vir do Supabase ou ser um path local
+          mainImagePhoto = mainPhoto.url;
+        }
+      } else if (mainPhoto.path) {
+        mainImagePhoto = `${bucketUrl}${mainPhoto.path}`;
+      }
+    }
 
     const handleAddToCart = () => {
         addToCart(product);
