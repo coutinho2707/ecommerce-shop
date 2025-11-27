@@ -4,8 +4,11 @@ import { ProductDetailPage } from './pages/product-detail.page';
 import { CartPage } from './pages/cart-page';
 import { SignInPage } from './pages/singin-pages';
 import { SignUpPage } from './pages/singup-form';
+import { OrdersPage } from './pages/orders-page';
+import { CheckoutPage } from './pages/checkout-page';
 import { Header } from './components/layout/header';
 import { AuthProvider } from './cases/auth/contexts/auth.context';
+import { ProtectedRoute } from './components/auth/protected-route';
 
 function App() {
   return (
@@ -20,6 +23,22 @@ function App() {
             <Route path="/cart" element={<CartPage />} />
             <Route path="/signin" element={<SignInPage />} />
             <Route path="/signup" element={<SignUpPage />} />
+            <Route 
+              path="/checkout" 
+              element={
+                <ProtectedRoute>
+                  <CheckoutPage />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/orders" 
+              element={
+                <ProtectedRoute>
+                  <OrdersPage />
+                </ProtectedRoute>
+              } 
+            />
           </Routes>
         </main>
       </div>

@@ -21,6 +21,8 @@ export class AuthService {
   }
 
   async signIn(data: SignInDto): Promise<AuthResponse> {
+    console.log('Attempting sign in with email:', data.email);
+    
     const response = await fetch(`${API_URL}/auth/sign-in`, {
       method: 'POST',
       headers: {
@@ -29,12 +31,17 @@ export class AuthService {
       body: JSON.stringify(data),
     });
 
+    console.log('Sign in response status:', response.status);
+
     if (!response.ok) {
       const error = await response.json();
-      throw new Error(error.message || 'Invalid credentials');
+      console.error('Sign in error:', error);
+      throw new Error(error.message || 'Credenciais inválidas');
     }
 
-    return response.json();
+    const result = await response.json();
+    console.log('Sign in successful for user:', result.customer?.email);
+    return result;
   }
 
   async signOut(): Promise<void> {

@@ -2,9 +2,11 @@ import { useCart } from "../hooks/use-cart";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Trash2 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export function CartContent() {
     const { cart, removeFromCart, updateQuantity, totalValue, clearCart } = useCart();
+    const navigate = useNavigate();
     const bucketsUrl = import.meta.env.VITE_BUCKETS_URL;
 
     const formatPrice = (price: number) => {
@@ -100,7 +102,11 @@ export function CartContent() {
                         </div>
                     </div>
 
-                    <Button className="w-full" size="lg">
+                    <Button 
+                        className="w-full" 
+                        size="lg"
+                        onClick={() => navigate('/checkout')}
+                    >
                         Finalizar Compra
                     </Button>
                 </Card>

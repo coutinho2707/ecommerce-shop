@@ -1,4 +1,5 @@
-import { createContext, ReactNode, useState, useCallback, useEffect } from 'react';
+import { createContext, useState, useCallback, useEffect } from 'react';
+import type { ReactNode } from 'react';
 import { AuthService } from '../services/auth.service';
 import type { SignInDto, SignUpDto, User } from '../dtos/auth.dto.tsx';
 
@@ -36,7 +37,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       const response = await authService.signIn(data);
       authService.saveUser(response.customer);
-      authService.saveToken(response.user.id);
+      const accessToken = response.session?.access_token || response.user.id;
+      authService.saveToken(accessToken);
+      console.log('signIn - Token saved:', accessToken ? 'success' : 'failed');
       setUser(response.customer);
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Login failed';
@@ -53,7 +56,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       const response = await authService.signUp(data);
       authService.saveUser(response.customer);
-      authService.saveToken(response.user.id);
+      const accessToken = response.session?.access_token || response.user.id;
+      authService.saveToken(accessToken);
+      console.log('signUp - Token saved:', accessToken ? 'success' : 'failed');
       setUser(response.customer);
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Registration failed';

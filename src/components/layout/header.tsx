@@ -9,7 +9,7 @@ import {
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { cn } from "@/lib/utils";
-import { ChevronDown, Home, ShoppingCart, Store, LogOut, User } from "lucide-react";
+import { ChevronDown, Home, ShoppingCart, Store, LogOut, User, Package } from "lucide-react";
 import { Link, useSearchParams, useNavigate } from "react-router-dom";
 
 export function Header() {
@@ -123,32 +123,39 @@ export function Header() {
                         </Link>
 
                         {isAuthenticated && user ? (
-                            <DropdownMenu>
-                                <DropdownMenuTrigger asChild>
+                            <>
+                                <Link to="/orders">
                                     <Button variant="outline" size="icon" className="rounded-full">
-                                        <User className="size-5" />
+                                        <Package className="size-5" />
                                     </Button>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent align="end">
-                                    <DropdownMenuItem disabled className="text-xs">
-                                        {user.email}
-                                    </DropdownMenuItem>
-                                    <DropdownMenuItem onClick={handleSignOut} className="cursor-pointer gap-2">
-                                        <LogOut className="size-4" />
-                                        Sign Out
-                                    </DropdownMenuItem>
-                                </DropdownMenuContent>
-                            </DropdownMenu>
+                                </Link>
+                                <DropdownMenu>
+                                    <DropdownMenuTrigger asChild>
+                                        <Button variant="outline" size="icon" className="rounded-full">
+                                            <User className="size-5" />
+                                        </Button>
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent align="end">
+                                        <DropdownMenuItem disabled className="text-xs">
+                                            {user.email}
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem onClick={handleSignOut} className="cursor-pointer gap-2">
+                                            <LogOut className="size-4" />
+                                            Sair
+                                        </DropdownMenuItem>
+                                    </DropdownMenuContent>
+                                </DropdownMenu>
+                            </>
                         ) : (
                             <>
                                 <Link to="/signin">
                                     <Button variant="outline" size="sm">
-                                        Sign In
+                                        Entrar
                                     </Button>
                                 </Link>
                                 <Link to="/signup">
                                     <Button size="sm">
-                                        Sign Up
+                                        Registrar
                                     </Button>
                                 </Link>
                             </>
